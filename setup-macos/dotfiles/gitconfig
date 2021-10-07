@@ -1,0 +1,12 @@
+[core]
+	excludesfile = /Users/ue86yw/.gitignore_global
+[user]
+	email = vinktim@gmail.com
+	name = Tim Vink
+[format]
+	pretty = format:%C(auto)%h %d%Creset %s%n%Cgreen%ad%Creset %aN <%aE>%n
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

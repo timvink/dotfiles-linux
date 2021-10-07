@@ -1,0 +1,166 @@
+# custom precommit checks
+run_tests() {
+    if [ -d "tests/" ]; then
+        pytest tests/
+    fi
+}
+commitcheck() { 
+    black . --check && pyflakes . && run_tests;
+}
+
+# Git stuff
+alias gst='git status'
+alias gp='git pull'
+alias gc='git commit -m'
+alias gaa='commitcheck && git add --all && gst'
+alias gl='git log --graph'
+alias gpo='git push origin'
+alias gpom='git push origin master'
+
+# File system
+alias ls='ls -lash'
+alias grep='grep --color=auto'
+alias cd2="cd ../.."
+alias cd3="cd ../../.."
+alias del="rmtrash"
+alias rm="rm -i" # to get into a better habit of using del
+alias cat="bat" # Better printing
+
+alias favfolder="cd ~/ing_workspace"
+# Programs
+alias lab="jupyter lab"
+alias R="R --no-save"
+
+# Python. Debugging with ipdb
+export PYTHONBREAKPOINT=ipdb.set_trace
+alias debug="python -m ipdb -c continue"
+alias ipy="ipython --no-confirm-exit --quick --InteractiveShellApp.extensions=\"['autoreload']\" --InteractiveShellApp.exec_lines=\"['%autoreload 2', 'import os,sys']\""
+
+# Quickly start tmux session with windows and panes
+alias t="tmuxinator"
+
+# Bash commands
+alias e="exit"
+
+###########
+# Functions
+###########
+
+# Going up
+# https://stackoverflow.com/questions/12198222/go-few-directories-up-in-linux
+up() { local p= i=${1:-1}; while (( i-- )); do p+=../; done; cd "$p$2" && pwd; }
+
+
+# make and change dir
+mkcdir ()
+{
+    mkdir -p -- "$1" &&
+      cd -P -- "$1"
+}
+
+# Quickly open google chrome (mac only)
+alias g='/usr/bin/open -a "/Applications/Google Chrome.app"'
+gs() {
+    if read  -t 0 a; then
+        query="$a"
+    else
+        query="$*"
+    fi
+    if [ "$OSTYPE" == "linux-gnu" ]
+    then
+        google-chrome "http://www.google.nl/search?q=$query"
+    else
+        open -a "Google Chrome" "http://www.google.nl/search?q=$query"
+    fi
+}
+
+
+# Append gitignore
+append_gitignore() {
+  curl -sLw "\n" 	https://www.gitignore.io/api/r,macos,python,pycharm,windows,visualstudio,visualstudiocode,jupyternotebooks >> .gitignore
+  awk '!a[$0]++' .gitignore > gitignore
+  mv gitignore .gitignore
+}
+
+# At work
+turn_wifi_on() {
+    wifistatus=$(networksetup -getairportpower en0 )
+    if [ "$wifistatus" '==' "Wi-Fi Power (en0): Off" ]
+    then
+        networksetup -setairportpower en0 on
+        echo "Turned on your wifi"
+    fi
+}
+
+
+
+wifi_guest() {
+    # No ING pypi
+    unset_ing_pip
+
+    # Make sure airport is on
+    turn_wifi_on
+
+    # Make sure we are connected to GUEST network
+    currentwifi=$(networksetup -getairportnetwork en0 | cut -c 24-)
+    if [ "$currentwifi" '==' "GUEST" ] 
+    then
+        echo "Connected to GUEST network, connecting to internet.."
+    else
+        echo "Connecting to GUEST network... "
+        networksetup -setairportnetwork en0 GUEST
+        # Make sure to wait for connection to be established
+        while ! ping -c 1 -i 0.3 wifiportal.wlan.ing.net &> /dev/null; do
+            sleep 1
+        done
+    fi
+    
+    # We might also have LAN cable in, so change network order preference
+    # Tricks from https://github.com/henri/handy-alias/blob/master/osx_alias.bash
+    networkdevicesotherthanwifi=$(networksetup -listallnetworkservices | grep -v 'An asterisk ' |  sed s/\^'*'// | grep -xv "Wi-Fi" | sed 's/.*/\"&\"/' | tr '\n' ' ')
+    echo networksetup -ordernetworkservices \"Wi-Fi\" $networkdevicesotherthanwifi | bash
+    echo "Changed network order, WIFI over LAN"
+
+    # Try to accept the page
+    # Done a couple of times, untill we have a connection
+    n=0
+    until [ $n -ge 3 ]
+    do
+        curl -d "wlan=GUEST&buttonClicked=4&err_flag=0" https://wifiportal.wlan.ing.net &> /dev/null
+        # Is it working yet?
+        ping -c 1 -i 0.3 google.nl &> /dev/null && break
+        sleep 0.1
+    done
+
+    # Test if connection is working
+    if ping -c 1 -i 0.3 google.nl &> /dev/null; then
+        echo "Connected to GUEST and access to internet"
+    else
+        echo "Not connected, something went wrong"
+    fi
+
+}
+
+set_ing_pip() {
+    export PIP_INDEX_URL=https://artifactory.ing.net/artifactory/api/pypi/releases_pypi_all/simple
+    export PIP_EXTRA_INDEX_URL=https://artifactory.ing.net/artifactory/api/pypi/pypipublic/simple
+    export PIP_TRUSTED_HOST=artifactory.ing.net
+    export REQUESTS_CA_BUNDLE=$HOME/Developer/ING/certificates/ing.ca-bundle
+}
+
+unset_ing_pip() {
+    unset PIP_INDEX_URL
+    unset PIP_EXTRA_INDEX_URL
+    unset PIP_TRUSTED_HOST
+    unset REQUESTS_CA_BUNDLE
+}
+
+
+network_lan() {
+    networkdevicesotherthanlan=$(networksetup -listallnetworkservices | grep -v 'An asterisk ' |  sed s/\^'*'// | grep -xv "USB 10/100/1000 LAN" | sed 's/.*/\"&\"/' | tr '\n' ' ')
+    echo networksetup -ordernetworkservices \"USB 10/100/1000 LAN\" $networkdevicesotherthanlan | bash
+    echo "Changed network order, LAN over WIFI"
+    ping -c 1 intranet.ing.net  >/dev/null && echo 'Connected to intranet.ing.net!'
+    set_ing_pip
+}
+
