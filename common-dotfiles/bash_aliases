@@ -18,23 +18,33 @@ alias gpo='git push origin'
 alias gpom='git push origin master'
 
 # File system
-alias ls='ls -lash'
+# alias ls='ls -lash'
 alias grep='grep --color=auto'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
 alias del="rmtrash"
 alias rm="rm -i" # to get into a better habit of using del
-alias cat="bat" # Better printing
+
+# better printing with bat
+# on ubuntu, installed as batcat
+# due to potential name conflict
+if hash batcat 2>/dev/null; then
+    alias cat="batcat"
+fi
+if hash bat 2>/dev/null; then
+    alias cat="bat"
+fi
+
 
 alias favfolder="cd ~/ing_workspace"
 # Programs
 alias lab="jupyter lab"
 alias R="R --no-save"
 
-# Python. Debugging with ipdb
+# Python. Debugging with ipdb whebn available
 export PYTHONBREAKPOINT=ipdb.set_trace
 alias debug="python -m ipdb -c continue"
-alias ipy="ipython --no-confirm-exit --quick --InteractiveShellApp.extensions=\"['autoreload']\" --InteractiveShellApp.exec_lines=\"['%autoreload 2', 'import os,sys']\""
+alias ipy="ipython --no-confirm-exit --quick --InteractiveShellApp.extensions autoreload --InteractiveShellApp.exec_lines '%autoreload 2' --InteractiveShellApp.exec_lines 'import os,sys'"
 
 # Quickly start tmux session with windows and panes
 alias t="tmuxinator"

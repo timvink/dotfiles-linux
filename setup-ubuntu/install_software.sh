@@ -3,6 +3,7 @@
 # Basic software
 sudo apt install xclip git vim -y
 sudo apt install curl wget tree -y
+sudo apt install bat
 
 # Be able to remap Capslock to CTRL
 # https://askubuntu.com/questions/33774/how-do-i-remap-the-caps-lock-and-ctrl-keys/
