@@ -36,7 +36,6 @@ if hash bat 2>/dev/null; then
 fi
 
 
-alias favfolder="cd ~/ing_workspace"
 # Programs
 alias lab="jupyter lab"
 alias R="R --no-save"
