@@ -5,6 +5,9 @@ sudo apt install xclip git vim -y
 sudo apt install curl wget tree -y
 sudo apt install bat
 
+# Configure GIT
+git config --global core.editor "vim"
+
 # Be able to remap Capslock to CTRL
 # https://askubuntu.com/questions/33774/how-do-i-remap-the-caps-lock-and-ctrl-keys/
 sudo apt install gnome-tweak-tool
