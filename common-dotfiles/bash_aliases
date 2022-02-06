@@ -52,6 +52,7 @@ alias t="tmuxinator"
 
 # Bash commands
 alias e="exit"
+alias c="clear"
 
 ###########
 # Functions
