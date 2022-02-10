@@ -8,8 +8,6 @@ commitcheck() {
     black . --check && pyflakes . && run_tests;
 }
 
-alias c="clear"
-
 # Git stuff
 alias gst='git status'
 alias gp='git pull'
