@@ -1,18 +1,8 @@
-# custom precommit checks
-run_tests() {
-    if [ -d "tests/" ]; then
-        pytest tests/
-    fi
-}
-commitcheck() { 
-    black . --check && pyflakes . && run_tests;
-}
-
 # Git stuff
 alias gst='git status'
 alias gp='git pull'
 alias gc='git commit -m'
-alias gaa='commitcheck && git add --all && gst'
+alias gaa='git add --all && gst'
 alias gl='git log --graph'
 alias gpo='git push origin'
 alias gpom='git push origin master'
