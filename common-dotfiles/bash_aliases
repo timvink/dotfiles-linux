@@ -28,7 +28,6 @@ fi
 
 # Programs
 alias lab="jupyter lab"
-alias R="R --no-save"
 
 # Python. Debugging with ipdb whebn available
 export PYTHONBREAKPOINT=ipdb.set_trace
