@@ -1,8 +1,6 @@
 .DS_Store
 *.swp
 
-# Created by https://www.gitignore.io/api/r,macos,python,pycharm,windows,visualstudio,jupyternotebooks
-# Edit at https://www.gitignore.io/?templates=r,macos,python,pycharm,windows,visualstudio,jupyternotebooks
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
