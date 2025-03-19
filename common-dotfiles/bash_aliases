@@ -81,4 +81,26 @@ append_gitignore() {
   mv gitignore .gitignore
 }
 
+# Create a release
+create_release() {
+    # Ensure a version argument is provided
+    if [ -z "$1" ]; then
+        echo "Usage: create_release <version>"
+        echo "Example: create_release v1.2.3"
+        return 1
+    fi
+
+    VERSION=$1
+
+    # Check if the working directory is clean
+    git diff --quiet --cached && git diff --quiet
+    if [ $? -ne 0 ]; then
+        echo "Error: Your working directory is not clean. Commit or stash your changes before tagging."
+        return 1
+    fi
+
+    # Create and push the tag
+    git tag -a "$VERSION" -m "Release $VERSION"
+    git push origin "$VERSION"
+}
 
