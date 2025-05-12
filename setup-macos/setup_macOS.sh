@@ -63,18 +63,17 @@ CASKS=(
     dropbox
     flux
     iterm2
-    shiftit
+    rectangle
     spotify
-    typora
+    notion
 )
 
 echo "Installing cask apps..."
 brew cask install ${CASKS[@]}
 
-# Install R
-# Install as cask to prevent compiling packages from source
-# See https://github.com/adamhsparks/setup_macOS_for_R
-brew cask install r
+# Install Python
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install
 
 echo "Installing fonts..."
 brew tap homebrew/cask-fonts
@@ -86,10 +85,6 @@ FONTS=(
 brew cask install ${FONTS[@]}
 
 echo "Configuring OSX..."
-
-# Require password as soon as screensaver or sleep mode starts
-#defaults write com.apple.screensaver askForPassword -int 1
-#defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Show filename extensions by default
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
