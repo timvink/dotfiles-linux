@@ -30,15 +30,12 @@ brew install the_silver_searcher
 # Note I have an alias setup in my .zshrc file but not in .bashrc
 brew install exa
 
-# We need vim with clipboard brew install vim --with-client-serversupport
-brew install vim --with-client-server
+# We need vim
+brew install vim 
 
 # Install some brew packages
 echo "Installing packages..."
 PACKAGES=(
-  bash
-  bash-completion
-  zsh
   git
   jq
   tmux
@@ -47,15 +44,10 @@ PACKAGES=(
   bat
 )
 brew install ${PACKAGES[@]}
-brew install freetype # R package sysfonts needs this C library
-brew install libxml2 # R tidyverse dependency
-brew install reattach-to-user-namespace # Copy/paste in tmux
 
 echo "Cleaning up..."
 brew cleanup
 
-# Get homebrew cask
-brew tap homebrew/cask
 
 # Cask programs
 CASKS=(
@@ -69,7 +61,7 @@ CASKS=(
 )
 
 echo "Installing cask apps..."
-brew cask install ${CASKS[@]}
+brew install ${CASKS[@]} --cask
 
 # Install Python
 curl -LsSf https://astral.sh/uv/install.sh | sh
