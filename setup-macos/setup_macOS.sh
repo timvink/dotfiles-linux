@@ -68,13 +68,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv python install
 
 echo "Installing fonts..."
-brew tap homebrew/cask-fonts
-FONTS=(
-    font-roboto
-    font-clear-sans
-    font-fira-code
-)
-brew cask install ${FONTS[@]}
+brew install --cask font-roboto
+brew install --cask font-fira-code
 
 echo "Configuring OSX..."
 
