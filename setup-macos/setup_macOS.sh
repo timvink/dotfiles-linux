@@ -12,13 +12,7 @@ echo "Starting setup of macOS"
 brew update
 
 # Install GNU core utilities (those that come with OS X are outdated)
-#brew tap homebrew/dupes
 brew install coreutils
-#brew install gnu-sed --with-default-names
-#brew install gnu-tar --with-default-names
-#brew install gnu-indent --with-default-names
-#brew install gnu-which --with-default-names
-#brew install gnu-grep --with-default-names
 
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
 brew install findutils
@@ -26,12 +20,12 @@ brew install findutils
 # The much faster `ag` command
 brew install the_silver_searcher
 
+# Managing dotfiles
+brew install chezmoi
+
 # The very cool `exa`, a colorized `ls`
 # Note I have an alias setup in my .zshrc file but not in .bashrc
 brew install exa
-
-# We need vim
-brew install vim 
 
 # Install some brew packages
 echo "Installing packages..."
@@ -42,12 +36,13 @@ PACKAGES=(
   tree
   wget
   bat
+  vim
+  neovim
 )
 brew install ${PACKAGES[@]}
 
 echo "Cleaning up..."
 brew cleanup
-
 
 # Cask programs
 CASKS=(
