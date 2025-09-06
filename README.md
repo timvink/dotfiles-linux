@@ -1,3 +1,5 @@
+> Archived, now see https://github.com/timvink/dotfiles for latest config
+
 # Personal setup with dotfiles
 
 
